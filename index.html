@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester med farver</title>
+    <link rel="stylesheet" href="colorchange.css">
+</head>
+<body>
+    <form class="color-picker" action="">
+    <fieldset>
+        <legend class="visually-hidden">Pick a color scheme</legend>
+
+        <label class="visually-hidden" for="default">Default</label>
+            <input id="default" checked type="radio" onclick="notifyMe()" name="theme">
+        
+
+        <label class="visually-hidden" for="dark">Dark</label>
+            <input id="dark" type="radio" onclick="notifyMe()" name="theme">
+        
+
+        <label class="visually-hidden" for="light">Light</label>
+            <input id="light" type="radio" onclick="notifyMe()" name="theme">
+        
+
+        <label class="visually-hidden" for="green">Green</label>
+            <input id="green" type="radio" onclick="notifyMe()" name="theme">
+        
+
+    </fieldset>
+    <main>
+        <div class="wrapper">
+          <h1>lorem</h1>
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati natus error quam suscipit architecto enim
+            nobis vero eaque. Repudiandae quisquam impedit fugiat neque delectus doloremque!</p>
+          <p>Rem neque inventore necessitatibus totam incidunt eius reprehenderit quis ipsam officia praesentium, quod vero
+            soluta maxime iure nobis dolorum a quibusdam officiis ratione debitis? Ipsam.</p>
+        </div>
+      </main>
+</form>
+<script>
+    const colorThemes = document.querySelectorAll('[name="theme"]');
+
+// store theme
+const storeTheme = function (theme) {
+  localStorage.setItem("theme", theme);
+};
+
+// set theme when visitor returns
+const setTheme = function () {
+  const activeTheme = localStorage.getItem("theme");
+  colorThemes.forEach((themeOption) => {
+    if (themeOption.id === activeTheme) {
+      themeOption.checked = true;
+    }
+  });
+  // fallback for no :has() support
+  document.documentElement.className = activeTheme;
+};
+
+colorThemes.forEach((themeOption) => {
+  themeOption.addEventListener("click", () => {
+    storeTheme(themeOption.id);
+    // fallback for no :has() support
+    document.documentElement.className = themeOption.id;
+  });
+});
+function notifyMe(){
+    if(!("Notification" in window)){
+        alert("This browser dont support");
+    }
+    else if(Notification.permission == "granted"){
+        var notification = new Notification("Hi there!");
+    }
+    else if (Notification.permission != "denied")
+    {
+        Notification.requestPermission(function(permission){
+            if ("permission" == "granted"){
+                var notification = new Notification("Hi there!");                
+            }
+        });
+    }
+}
+
+document.onload = setTheme();
+
+</script>
+</body>
+</html>
